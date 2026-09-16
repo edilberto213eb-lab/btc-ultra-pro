@@ -1066,8 +1066,7 @@ def bot_loop():
 
 bot_thread = threading.Thread(
     target=bot_loop,
-    daemon=True
-)
+    daemon=True)
 
 bot_thread.start()
     
