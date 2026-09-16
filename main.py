@@ -1065,8 +1065,10 @@ def bot_loop():
 # =========================================================
 
 
-    bot_thread = threading.Thread(target=bot_loop, daemon=True)
+bot_thread = threading.Thread(
+    target=bot_loop,
+    daemon=True)
+
 bot_thread.start()
-print(">>> BOT THREAD INICIADO <<<")
-print(f">>> TOKEN existe? {bool(TOKEN)}")
-print(f">>> CHAT_ID existe? {bool(CHAT_ID)}")
+
+    
