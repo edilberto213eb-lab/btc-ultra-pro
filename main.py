@@ -1060,28 +1060,14 @@ def bot_loop():
 
             time.sleep(60)
 
-
 # =========================================================
-# ARRANQUE
+# ARRANQUE PARA GUNICORN / RENDER
 # =========================================================
 
-if __name__ == "__main__":
+bot_thread = threading.Thread(
+    target=bot_loop,
+    daemon=True
+)
 
-    thread = threading.Thread(
-        target=bot_loop,
-        daemon=True
-    )
-
-    thread.start()
-
-    port = int(
-        os.environ.get(
-            "PORT",
-            10000
-        )
-    )
-
-    app.run(
-        host="0.0.0.0",
-        port=port
-    )
+bot_thread.start()
+    
