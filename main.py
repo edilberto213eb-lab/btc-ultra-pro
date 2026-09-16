@@ -1065,10 +1065,15 @@ def bot_loop():
 # =========================================================
 
 
+print("🚀 INICIANDO MOTOR TELEGRAM...")
+
 bot_thread = threading.Thread(
     target=bot_loop,
-    daemon=True)
+    daemon=True
+)
 
 bot_thread.start()
+
+print("🚀 HILO TELEGRAM INICIADO")
 
     
