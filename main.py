@@ -48,9 +48,8 @@ def health():
 # TELEGRAM
 # =========================================================
 
-def send_telegram(message):
-
-    if not TOKEN or not CHAT_ID:
+  def send_telegram(text): 
+if not TOKEN or not CHAT_ID:
         print("Faltan las variables de Telegram")
         return
 
