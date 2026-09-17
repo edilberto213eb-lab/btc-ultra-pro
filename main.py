@@ -48,11 +48,11 @@ def health():
 # TELEGRAM
 # =========================================================
 
-  def send_telegram(message): 
-if not TOKEN or not CHAT_ID:
+  
+def send_telegram(message):
+    if not TOKEN or not CHAT_ID:
         print("Faltan las variables de Telegram")
         return
-
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 
     data = {
