@@ -68,7 +68,7 @@ def send_telegram(message):
 
 def get_klines(symbol):
 
-    url = "https://fapi.binance.com/fapi/v1/klines"
+    url = "https://api.binance.com/fapi/v1/klines"
 
     params = {
         "symbol": symbol,
