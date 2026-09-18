@@ -46,34 +46,21 @@ def health():
 
 # =========================================================
 # TELEGRAM
-# =====================================================
-
+# =========================================================
 def send_telegram(message):
     if not TOKEN or not CHAT_ID:
         print("Falta las variables de Telegram")
         return
-
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     data = {
         "chat_id": CHAT_ID,
         "text": message
     }
-
     try:
-        response = requests.post(
-            url,
-            data=data,
-            timeout=10
-        )
-        print("Telegram:", response.status_code, response.text)
-    except Exception as e:
-        print("Error enviando a Telegram:", e)
-            response.status_code
-        )
-
+        r = requests.post(url, data=data, timeout=10)
+        print("Telegram:", r.status_code, r.text)
     except Exception as e:
         print("Error Telegram:", e)
-
 
 # =========================================================
 # BINANCE FUTURES
