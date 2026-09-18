@@ -12,14 +12,17 @@ SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
 def get_df(symbol):
     try:
-        # ESTA API SI FUNCIONA EN USA / RENDER
-        url = f"https://data-api.binance.vision/api/v3/klines?symbol={symbol}&interval=4h&limit=100"
-        r = requests.get(url, timeout=15)
-        data = r.json()
-        if not isinstance(data, list) or len(data) < 50:
-            print(f"{symbol} datos invalidos: {data}")
+        # API BYBIT - Funciona en USA y en todo el mundo
+        url = f"https://api.bybit.com/v5/market/kline?category=spot&symbol={symbol}&interval=240&limit=100"
+        r = requests.get(url, timeout=15).json()
+        data = r.get("result", {}).get("list", [])
+        if not data or len(data) < 50:
+            print(f"{symbol} datos invalidos bybit: {r}")
             return None
-        df = pd.DataFrame(data, columns=["ot","o","h","l","c","v","ct","qv","n","tb","tq","i"])
+        
+        # Bybit viene al reves, lo volteamos
+        data = data[::-1]
+        df = pd.DataFrame(data, columns=["ot","o","h","l","c","v","turn"])
         df[["o","h","l","c"]] = df[["o","h","l","c"]].astype(float)
         return df
     except Exception as e:
@@ -41,7 +44,7 @@ def send(symbol, signal, score, price):
     
     try:
         url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        requests.post(url, json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"}, timeout=10)
+        requests.post(url, json={"chat_id": CHAT_ID, "text": text}, timeout=10)
         print(f"Alerta enviada {symbol}")
     except Exception as e:
         print(f"Error telegram {e}")
@@ -49,7 +52,7 @@ def send(symbol, signal, score, price):
 def check(symbol):
     df = get_df(symbol)
     if df is None or len(df) < 50:
-        print(f"{symbol} saltado - sin datos")
+        print(f"{symbol} saltado")
         return
     
     c = df["c"]
@@ -61,7 +64,6 @@ def check(symbol):
 
     long = 0
     short = 0
-
     if rsi < 40: long += 30
     if rsi > 60: short += 30
     if rsi < 30: long += 10
@@ -79,11 +81,9 @@ def check(symbol):
         send(symbol, "LONG", long, price)
     elif short >= 70:
         send(symbol, "SHORT", short, price)
-    else:
-        print(f"{symbol} sin señal fuerte")
 
 def main():
-    print("INICIANDO MOTOR TELEGRAM...")
+    print("INICIANDO MOTOR TELEGRAM - BYBIT...")
     for s in SYMBOLS:
         check(s)
         time.sleep(1)
