@@ -49,7 +49,7 @@ def health():
 # =========================================================
 
   
-def send_telegram(text):
+def send_telegram(message):
    r = requests.post(url, data=data)
 print("Telegram:", r.status_code, r.text) if not TOKEN or not CHAT_ID:
         print("Faltan las variables de Telegram")
