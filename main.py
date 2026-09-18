@@ -1,4 +1,8 @@
-import os, requests, pandas as pd, ta, time
+import os
+import requests
+import pandas as pd
+import ta
+import time
 from datetime import datetime
 
 TOKEN = os.getenv("TELEGRAM_TOKEN")
