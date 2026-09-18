@@ -5,7 +5,7 @@ import ta
 import time
 from datetime import datetime
 
-TOKEN = os.getenv("TELEGRAM_TOKEN")
+TOKEN = os.getenv("TG_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
 SYMBOLS = ["BTC-USDT", "ETH-USDT", "SOL-USDT"]
