@@ -17,9 +17,27 @@ def get_df(symbol):
         print(f"Error {symbol}: {e}")
         return None
 
+def send(symbol, signal, score, price):
+    if "LONG" in signal:
+        sl = price * 0.985
+        tp1 = price * 1.025
+        tp2 = price * 1.05
+    else:
+        sl = price * 1.015
+        tp1 = price * 0.975
+        tp2 = price * 0.95
+
+    hora = datetime.now().strftime('%H:%M - %d/%m')
+    text = f"🚀 {symbol} {signal}\nScore: {score}/100\nPrecio: {price:.2f}\n\nSL: {sl:.2f}\nTP1: {tp1:.2f}\nTP2: {tp2:.2f}\n\n{hora}"
+    
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    requests.post(url, json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})
+    print(f"Alerta enviada {symbol}")
+
 def check(symbol):
     df = get_df(symbol)
-    if df is None: return
+    if df is None:
+        return
     
     c = df["c"]
     price = c.iloc[-1]
@@ -42,31 +60,22 @@ def check(symbol):
     if macd_diff > 0: long += 25
     else: short += 25
 
-    # Filtro extra
     if price > ema20: long += 10
     else: short += 10
 
     print(f"{symbol} | LONG {long} | SHORT {short} | RSI {rsi:.1f}")
 
     if long >= 70:
-        send(symbol, "LONG 🟢", long, price)
+        send(symbol, "LONG", long, price)
     elif short >= 70:
-        send(symbol, "SHORT 🔴", short, price)
+        send(symbol, "SHORT", short, price)
 
-def send(symbol, signal, score, price):
-    if "LONG" in signal:
-        sl = price * 0.985
-        tp1 = price * 1.025
-        tp2 = price * 1.05
-    else:
-        sl = price * 1.015
-        tp1 = price * 0.975
-        tp2 = price * 0.95
+def main():
+    print("INICIANDO MOTOR TELEGRAM...")
+    for s in SYMBOLS:
+        check(s)
+        time.sleep(1)
+    print("Analisis terminado")
 
-    text = f"""
-🚀 *{symbol} {signal}*
-*Score:* {score}/100
-*Precio:* {price:.2f}
-
-*SL:* {sl:.2f}
-*TP1:* {tp1:.2
+if __name__ == "__main__":
+    main()
