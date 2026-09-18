@@ -9,8 +9,8 @@ from flask import Flask
 # CONFIGURACIÓN
 # =========================================================
 
-TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+TOKEN = os.getenv("TG_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
 SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
