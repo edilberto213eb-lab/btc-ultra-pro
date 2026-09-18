@@ -12,7 +12,8 @@ SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
 def get_df(symbol):
     try:
-        url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval=4h&limit=100"
+        # ESTA API SI FUNCIONA EN USA / RENDER
+        url = f"https://data-api.binance.vision/api/v3/klines?symbol={symbol}&interval=4h&limit=100"
         r = requests.get(url, timeout=15)
         data = r.json()
         if not isinstance(data, list) or len(data) < 50:
