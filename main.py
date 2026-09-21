@@ -195,4 +195,4 @@ def calculate_volume_variation(klines):
         return None
 
     ratio = current["volume"] / avg_volume
-    variation = ((current["volume"] - avg_volume) / avg_volume
+    variation = ((current["volume"] - avg_volume) / avg_volume) 
